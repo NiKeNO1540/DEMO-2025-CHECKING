@@ -57,9 +57,6 @@ execute_check "Ping 172.16.2.1" "ping -c 2 172.16.2.1"
 execute_check "Ping 192.168.1.10" "ping -c 2 192.168.1.10"
 execute_check "Ping 8.8.8.8" "ping -c 2 8.8.8.8"
 
-# Проверка статуса dnsmasq
-execute_check "Проверка статуса dnsmasq" "systemctl status dnsmasq"
-
 # Проверка DNS разрешения имен
 execute_check "Ping ya.ru (проверка DNS)" "ping -c 2 ya.ru"
 
@@ -73,8 +70,8 @@ if ping -c 2 8.8.8.8 &> /dev/null; then
         log_and_echo "Установка sshpass..."
         
         # Определяем пакетный менеджер
-        if command -v apt &> /dev/null; then
-            apt update && apt install -y sshpass
+        if command -v apt-get &> /dev/null; then
+            apt-get update && apt-get install -y sshpass
         elif command -v yum &> /dev/null; then
             yum install -y sshpass
         elif command -v dnf &> /dev/null; then
@@ -94,7 +91,7 @@ if ping -c 2 8.8.8.8 &> /dev/null; then
         execute_check "Добавление SSH хоста в known_hosts" "ssh-keyscan -p 2026 -H 192.168.1.10 >> ~/.ssh/known_hosts"
 
         # Добавление ключа
-        execute_check "Создание RSA ключа для копирования" "ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa -q"
+        execute_check "Создание RSA ключа для копирования" "ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa -q"
         
         # Копируем SSH ключ
         execute_check "Копирование SSH ключа" "sshpass -p \"P@ssw0rd\" ssh-copy-id -p 2026 sshuser@192.168.1.10"
