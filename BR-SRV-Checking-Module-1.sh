@@ -92,6 +92,9 @@ if ping -c 2 8.8.8.8 &> /dev/null; then
         
         # Добавляем хост в known_hosts
         execute_check "Добавление SSH хоста в known_hosts" "ssh-keyscan -p 2026 -H 192.168.1.10 >> ~/.ssh/known_hosts"
+
+        # Добавление ключа
+        execute_check "Создание RSA ключа для копирования" "ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa -q"
         
         # Копируем SSH ключ
         execute_check "Копирование SSH ключа" "sshpass -p \"P@ssw0rd\" ssh-copy-id -p 2026 sshuser@192.168.1.10"
