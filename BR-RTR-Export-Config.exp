@@ -1,0 +1,19 @@
+#!/usr/bin/expect -f
+
+set force_conservative 0  
+if {$force_conservative} {
+        set send_slow {1 .1}
+        proc send {ignore arg} {
+                sleep .1
+                exp_send -s -- $arg
+        }
+}
+
+set timeout -1
+spawn sshpass -p admin ssh admin@192.168.3.1
+match_max 100000
+expect -exact "^[7^[\[r^[\[999;999H^[\[6n"
+send -- "^[\[24;86R"
+expect -exact "br-rtr>"
+send -- "en\rwr\rcopy startup-config ftp ftp://ftpuser:password@192.168.3.10/pub/test.tar.gz\rexit\r "
+expect eof
