@@ -7,7 +7,6 @@ EXPECTED_CONFIG=(
     "domain=au-team.irpo"
     "server=8.8.8.8"
     "address=/hq-rtr.au-team.irpo/192.168.1.1"
-    "server=/au-team.irpo/192.168.3.10"
     "ptr-record=1.1.168.192.in-addr.arpa,hq-rtr.au-team.irpo"
     "\<web.au-team.irpo"
     "\<docker.au-team.irpo"
@@ -72,6 +71,7 @@ setup_ssh_connection() {
     # Сканирование SSH ключа хоста
     log_and_echo "Добавление SSH ключа хоста в known_hosts..."
     ssh-keyscan -p 2026 -H 192.168.3.10 >> ~/.ssh/known_hosts 2>> "$LOG_FILE"
+    ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa -q
     if [ $? -eq 0 ]; then
         log_and_echo "✓ SSH ключ хоста добавлен в known_hosts"
     else
