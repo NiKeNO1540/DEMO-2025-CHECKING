@@ -36,7 +36,7 @@ check_hq_config() {
         "ntp timezone utc+5"
         "interface tunnel.0"
         "ip address 172.16.0.1/30"
-        "ip tunnel 172.16.1.2 172.16.2.2 mode gre"
+        "ip tunnel 172.16.1.2 172.16.2.2 mode gre" || "ip tunnel 172.16.0.2 172.16.0.2 mode gre"
         "ip ospf authentication-key 0x8de456332b943f87"
         "interface int0"
         "ip nat outside"
