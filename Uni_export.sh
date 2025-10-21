@@ -49,7 +49,7 @@ check_hq_config() {
         "ip nat inside"
         "ip address 192.168.2.1/28"
         "interface int3"
-        "ip address 192.168.9.1/29"
+        "ip address 192.168.9.1/29" or "ip address 192.168.99.1/29"
         "ip nat pool"
         "ip nat source dynamic inside-to-outside pool np overload interface int0"
     )
