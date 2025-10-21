@@ -15,7 +15,7 @@ EXPECTED_CONFIG=(
     "\<168.192.in-addr.arpa,hq-srv.au-team.irpo"
     "\<hq-cli.au-team.irpo"
     "\<168.192.in-addr.arpa,hq-cli.au-team.irpo"
-    "<\br-srv.au-team.irpo"
+    "\<br-srv.au-team.irpo"
 )
 SSH_PASSWORD="P@ssw0rd"
 
