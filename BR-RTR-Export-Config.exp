@@ -15,5 +15,5 @@ match_max 100000
 expect -exact "7\[r\[999;999H\[6n"
 send -- "\[24;86R"
 expect -exact "br-rtr>"
-send -- "en\rwr\rcopy startup-config ftp ftp://ftpuser:password@192.168.3.10/pub/test.tar.gz\rexit\r "
+send -- "en\rwr\rcopy startup-config ftp ftp://ftpuser:password@192.168.3.10/pub/br-rtr-config.tar.gz\rexit\r "
 expect eof
