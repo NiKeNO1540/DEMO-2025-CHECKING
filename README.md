@@ -138,3 +138,24 @@ chmod +x Uni_export.sh && ./Uni_export.sh
 ```
 
 </details>
+
+<details>
+<summary>ISP</summary>
+
+### Первый модуль
+
+```bash
+apt-get install wget -y
+wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/ISP-Module-1.sh
+chmod +x ISP-Module-1.sh && ./ISP-Module-1.sh
+```
+
+### Второй модуль
+
+```bash
+apt-get install wget -y
+wget placeholder
+chmod +x ISP-Module-2.sh && ./ISP-Module-2.sh
+```
+
+</details>
