@@ -15,9 +15,9 @@ run_check() {
     
     # Выполнение команды с обработкой ошибок
     if eval "$command" 2>&1 | tee -a "$LOG_FILE"; then
-        echo "✅ Проверка выполнена успешно" | tee -a "$LOG_FILE"
+        echo "✓ Проверка выполнена успешно" | tee -a "$LOG_FILE"
     else
-        echo "❌ Проверка завершилась с ошибкой" | tee -a "$LOG_FILE"
+        echo "X Проверка завершилась с ошибкой" | tee -a "$LOG_FILE"
     fi
     
     echo "" | tee -a "$LOG_FILE"
@@ -52,4 +52,4 @@ echo "Проверка завершена!"
 echo "Полные результаты сохранены в файл: $LOG_FILE"
 echo ""
 echo "Краткая сводка:"
-grep -E "✅|❌" "$LOG_FILE"
+grep -E "✓|X" "$LOG_FILE"
