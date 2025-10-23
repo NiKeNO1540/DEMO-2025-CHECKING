@@ -21,9 +21,9 @@ run_check() {
     
     # Выполняем команду и логируем результат
     if eval "$command" >> "$LOG_FILE" 2>&1; then
-        log_and_echo "✅ Успешно"
+        log_and_echo "✓ Успешно"
     else
-        log_and_echo "❌ Ошибка или условие не выполнено"
+        log_and_echo "X Ошибка или условие не выполнено"
     fi
     log_and_echo ""
 }
@@ -58,4 +58,4 @@ log_and_echo "Для просмотра лога выполните: cat $LOG_FI
 # Краткий итог
 log_and_echo ""
 log_and_echo "=== Краткий итог ==="
-grep -E "✅|❌" "$LOG_FILE"
+grep -E "✓|X" "$LOG_FILE"
