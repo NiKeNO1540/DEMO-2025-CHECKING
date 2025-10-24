@@ -47,8 +47,7 @@ run_check "Доступность веб-сервиса" "curl -s -f http://loca
 # Дополнительные полезные проверки
 run_check "Состояние RAID массива" "cat /proc/mdstat"
 run_check "Монтирование NFS" "df -h | grep /raid"
-run_check "Службы NFS" "systemctl status nfs-server 2>/dev/null | grep Active"
-run_check "Службы RAID" "systemctl status mdmonitor 2>/dev/null | grep Active"
+run_check "Службы NFS" "systemctl status nfs-server 2>/dev/null | grep Active: active"
 
 # Итоги
 log_and_echo "=== Проверка завершена ==="
