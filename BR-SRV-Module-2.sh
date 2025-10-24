@@ -36,7 +36,7 @@ echo ""
 # Выполнение проверок
 run_check "Пинг всех узлов Ansible" "ansible all -m ping"
 run_check "Проверка синхронизации системного времени" "timedatectl | grep 'System clock synchronized: yes'"
-run_check "Проверка наличия пользователей в Samba" "samba-tool user list | grep user"
+run_check "Проверка наличия пользователей в Samba" "samba-tool user list | grep hquser"
 run_check "Проверка членов группы HQ в Samba" "samba-tool group listmembers hq"
 run_check "Проверка статуса службы Samba" "systemctl status samba.service | grep 'Active: active'"
 run_check "Проверка SSH подключения к удаленному серверу" "ssh -p 2026 -o ConnectTimeout=10 -o BatchMode=yes sshuser@172.16.1.4 'echo \"SSH connection successful\"'"
