@@ -39,7 +39,7 @@ run_check "Проверка синхронизации системного вр
 run_check "Проверка наличия пользователей в Samba" "samba-tool user list | grep user"
 run_check "Проверка членов группы HQ в Samba" "samba-tool group listmembers hq"
 run_check "Проверка статуса службы Samba" "systemctl status samba.service | grep 'Active: active'"
-run_check "Проверка SSH подключения к удаленному серверу" "ssh -p 2026 -o ConnectTimeout=10 -o BatchMode=yes remote_user@172.16.1.4 'echo \"SSH connection successful\"'"
+run_check "Проверка SSH подключения к удаленному серверу" "ssh -p 2026 -o ConnectTimeout=10 -o BatchMode=yes sshuser@172.16.1.4 'echo \"SSH connection successful\"'"
 run_check "Проверка статуса приложения в Docker" "docker compose -f site.yml logs testapp | grep 'Uvicorn running'"
 
 # Добавленные проверки для более полного анализа
