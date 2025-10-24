@@ -91,7 +91,11 @@ if ping -c 2 8.8.8.8 &> /dev/null; then
         execute_check "Добавление SSH хоста в known_hosts" "ssh-keyscan -p 2026 -H 192.168.1.10 >> ~/.ssh/known_hosts"
 
         # Добавление ключа
+        if ! [ -f ~/.ssh/id_rsa.pub ]; then
         execute_check "Создание RSA ключа для копирования" "ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa -q"
+        else
+        log_and_echo "Ключ уже есть."
+        fi
         
         # Копируем SSH ключ
         execute_check "Копирование SSH ключа" "sshpass -p \"P@ssw0rd\" ssh-copy-id -p 2026 sshuser@192.168.1.10"
