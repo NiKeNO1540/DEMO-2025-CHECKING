@@ -72,7 +72,7 @@ setup_ssh_connection() {
     log_and_echo "Создание SSH ключа + добавление хоста в known_hosts..."
     ssh-keyscan -p 2026 -H 192.168.3.10 >> ~/.ssh/known_hosts 2>> "$LOG_FILE"
     if ! [ -f ~/.ssh/id_rsa.pub ]; then
-    execute_check "Создание RSA ключа для копирования" "ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa -q"
+    ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa -q
     else
     log_and_echo "Ключ уже есть."
     fi
