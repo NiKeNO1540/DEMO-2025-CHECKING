@@ -146,6 +146,7 @@ ping_hosts=(
     "172.16.1.1"
     "192.168.3.10"
     "8.8.8.8"
+    "br-srv.au-team.irpo"
 )
 
 for host in "${ping_hosts[@]}"; do
