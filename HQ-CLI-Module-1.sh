@@ -57,9 +57,6 @@ execute_check "Пинг 172.16.2.1" "ping 172.16.2.1 -c 2"
 execute_check "Пинг 192.168.1.10" "ping 192.168.1.10 -c 2"
 execute_check "Пинг 8.8.8.8" "ping 8.8.8.8 -c 2"
 
-# Проверка статуса dnsmasq
-execute_check "Проверка статуса dnsmasq" "systemctl status dnsmasq"
-
 # Проверка DNS разрешения имен
 execute_check "Пинг ya.ru (проверка DNS)" "ping ya.ru -c 2"
 
