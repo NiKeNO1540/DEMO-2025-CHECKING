@@ -69,7 +69,30 @@ check_hq_config() {
     
     # Дополнительные проверки для специфичных паттернов
     echo "--- Дополнительные проверки ---"
+
+    # Проверка статических NAT правил для HQ
+    echo "--- Проверка статических NAT правил ---"
     
+    declare -a hq_nat_static=(
+        "ip nat source static tcp 192.168.1.10 80 172.16.1.4 8080"
+        "ip nat source static tcp 192.168.1.10 2026 172.16.1.4 2026"
+    )
+    
+    local hq_nat_success=0
+    for nat_rule in "${hq_nat_static[@]}"; do
+        if grep -q "$nat_rule" "$config_file"; then
+            echo "✓ Найдено: $nat_rule"
+            ((hq_nat_success++))
+        else
+            echo "✗ ОШИБКА: Не найдено: $nat_rule"
+        fi
+    done
+    
+    if [[ $hq_nat_success -eq 2 ]]; then
+        echo "Второй модуль выполнен успешно."
+    else
+        echo "Второй модуль не выполнен успешно или ещё не начат."
+    fi
     # Проверка NAT pool (любое название)
     if grep -q "ip nat pool.*192.168.1.1-192.168.1.254,192.168.2.1-192.168.2.254" "$config_file"; then
         echo "✓ NAT pool корректно настроен"
@@ -143,7 +166,30 @@ check_br_config() {
     
     # Дополнительные проверки для специфичных паттернов
     echo "--- Дополнительные проверки ---"
+
+    # Проверка статических NAT правил для BR
+    echo "--- Проверка статических NAT правил ---"
     
+    declare -a br_nat_static=(
+        "ip nat source static tcp 192.168.3.10 8080 172.16.2.5 8080"
+        "ip nat source static tcp 192.168.3.10 2026 172.16.2.5 2026"
+    )
+    
+    local br_nat_success=0
+    for nat_rule in "${br_nat_static[@]}"; do
+        if grep -q "$nat_rule" "$config_file"; then
+            echo "✓ Найдено: $nat_rule"
+            ((br_nat_success++))
+        else
+            echo "✗ ОШИБКА: Не найдено: $nat_rule"
+        fi
+    done
+    
+    if [[ $br_nat_success -eq 2 ]]; then
+        echo "Второй модуль выполнен успешно."
+    else
+        echo "Второй модуль не выполнен успешно или ещё не начат."
+    fi
     # Проверка NAT pool (любое название)
     if grep -q "ip nat pool.*192.168.3.1-192.168.3.254" "$config_file"; then
         echo "✓ NAT pool корректно настроен"
