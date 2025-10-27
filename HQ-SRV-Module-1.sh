@@ -88,7 +88,7 @@ log_and_echo "Время проверки: $(date)"
 log_and_echo ""
 
 log_and_echo "=========================================="
-log_and_echo "Первая критерия"
+log_and_echo "Критерий 1"
 log_and_echo "Проверка IP адреса:"
 ip a | grep 192.168.1.10/27 >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
@@ -99,7 +99,7 @@ fi
 log_and_echo ""
 
 log_and_echo "=========================================="
-log_and_echo "Вторая критерия."
+log_and_echo "Критерий 2"
 log_and_echo "Проверка временной зоны:"
 timedatectl | grep "Asia/Yekaterinburg" >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
@@ -120,14 +120,14 @@ fi
 log_and_echo ""
 
 log_and_echo "=========================================="
-log_and_echo "Пятая критерия"
+log_and_echo "Критерий 5"
 log_and_echo "Проверка пользователей"
 cat /etc/passwd | grep home >> "$LOG_FILE" 2>&1
 log_and_echo "✓ Список пользователей с домашними директориями записан в лог"
 log_and_echo ""
 
 log_and_echo "=========================================="
-log_and_echo "Шестая критерия"
+log_and_echo "Критерий 6"
 log_and_echo "Проверка доступности сетевых узлов:"
 
 ping_hosts=(
@@ -151,7 +151,7 @@ done
 log_and_echo ""
 
 log_and_echo "=========================================="
-log_and_echo "Седьмая критерия"
+log_and_echo "Критерий 7"
 log_and_echo "Проверка DNS разрешения имен:"
 ping -c 2 ya.ru >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
@@ -225,7 +225,7 @@ fi
 log_and_echo ""
 
 log_and_echo "=========================================="
-log_and_echo "Девятая критерия"
+log_and_echo "Критерий 9"
 log_and_echo "Проверка SSH подключения:"
 log_and_echo "Попытка подключения к sshuser@192.168.3.10:2026..."
 
