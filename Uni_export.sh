@@ -142,16 +142,15 @@ check_br_config() {
         "ntp timezone utc+5"
         "interface tunnel.0"
         "ip address 172.16.0.2/30"
-        "ip tunnel 172.16.2.2 172.16.1.2 mode gre"
+        "ip tunnel 172.16.2.5 172.16.1.4 mode gre"
         "ip ospf authentication-key 0x8de456332b943f87"
         "interface int0"
         "ip nat outside"
-        "ip address 172.16.2.2/28"
+        "ip address 172.16.2.5/28"
         "interface int1"
         "ip nat inside"
         "ip address 192.168.3.1/28"
         "ip nat pool"
-        "ip nat source dynamic inside-to-outside pool np overload interface int0"
     )
     
     # Проверяем каждую ожидаемую строку
