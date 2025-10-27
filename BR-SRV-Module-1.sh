@@ -37,20 +37,24 @@ execute_check() {
 
 log_and_echo "Начало проверки системы - $(date)"
 log_and_echo "=========================================="
+log_and_echo "Первый критерий: IP-Адресация"
 
 # Проверка IP адреса
 execute_check "Проверка IP адреса 192.168.3.10/28" "ip a | grep 192.168.3.10/28"
 
-# Проверка временной зоны
-execute_check "Проверка временной зоны" "timedatectl | grep Asia/Yekaterinburg"
+log_and_echo "=========================================="
+log_and_echo "Второй критерий: Проверка временной зоны и имя устройства"
 
-# Проверка hostname
+execute_check "Проверка временной зоны" "timedatectl | grep Asia/Yekaterinburg"
 execute_check "Проверка hostname" "hostnamectl | grep br-srv.au-team.irpo"
 
-# Проверка пользователей с домашними директориями
+log_and_echo "=========================================="
+log_and_echo "Пятый критерий: Проверка пользователей"
+
 execute_check "Проверка пользователей с /home" "cat /etc/passwd | grep home"
 
-# Проверка доступности сетевых узлов
+log_and_echo "=========================================="
+log_and_echo "Шестой критерий: Сетевая связность"
 execute_check "Ping 192.168.3.1" "ping -c 2 192.168.3.1"
 execute_check "Ping 192.168.2.10" "ping -c 2 192.168.2.10"
 execute_check "Ping 172.16.2.1" "ping -c 2 172.16.2.1"
@@ -58,7 +62,9 @@ execute_check "Ping 192.168.1.10" "ping -c 2 192.168.1.10"
 execute_check "Ping 8.8.8.8" "ping -c 2 8.8.8.8"
 execute_check "Ping hq-srv" "ping -c 2 hq-srv.au-team.irpo"
 
-# Проверка DNS разрешения имен
+log_and_echo "=========================================="
+log_and_echo "Девятый критерий: Проверка SSH-связности."
+
 execute_check "Ping ya.ru (проверка DNS)" "ping -c 2 ya.ru"
 
 # Проверка доступности интернета для установки sshpass
@@ -69,17 +75,7 @@ if ping -c 2 8.8.8.8 &> /dev/null; then
     # Проверяем установлен ли sshpass
     if ! command -v sshpass &> /dev/null; then
         log_and_echo "Установка sshpass..."
-        
-        # Определяем пакетный менеджер
-        if command -v apt-get &> /dev/null; then
-            apt-get update && apt-get install -y sshpass
-        elif command -v yum &> /dev/null; then
-            yum install -y sshpass
-        elif command -v dnf &> /dev/null; then
-            dnf install -y sshpass
-        else
-            log_and_echo "Не удалось определить пакетный менеджер для установки sshpass"
-        fi
+        apt-get install sshpass -y
     else
         log_and_echo "sshpass уже установлен"
     fi
@@ -107,8 +103,6 @@ else
     log_and_echo "Интернет недоступен, пропускаем установку sshpass"
 fi
 
-# Проверка SSH подключения
-log_and_echo "=== Проверка SSH подключения ==="
 log_and_echo "Команда: ssh sshuser@192.168.1.10 -p 2026"
 log_and_echo "Выполняется тестовое SSH подключение (timeout 10s)..."
 
