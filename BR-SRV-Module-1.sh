@@ -37,19 +37,19 @@ execute_check() {
 
 log_and_echo "Начало проверки системы - $(date)"
 log_and_echo "=========================================="
-log_and_echo "Первый критерий: IP-Адресация"
+log_and_echo "Критерий 1: IP-Адресация"
 
 # Проверка IP адреса
 execute_check "Проверка IP адреса 192.168.3.10/28" "ip a | grep 192.168.3.10/28"
 
 log_and_echo "=========================================="
-log_and_echo "Второй критерий: Проверка временной зоны и имя устройства"
+log_and_echo "Критерий 2: Проверка временной зоны и имя устройства"
 
 execute_check "Проверка временной зоны" "timedatectl | grep Asia/Yekaterinburg"
 execute_check "Проверка hostname" "hostnamectl | grep br-srv.au-team.irpo"
 
 log_and_echo "=========================================="
-log_and_echo "Пятый критерий: Проверка пользователей"
+log_and_echo "Критерий 5: Проверка пользователей"
 
 execute_check "Проверка пользователей с /home" "cat /etc/passwd | grep home"
 
@@ -63,7 +63,7 @@ execute_check "Ping 8.8.8.8" "ping -c 2 8.8.8.8"
 execute_check "Ping hq-srv" "ping -c 2 hq-srv.au-team.irpo"
 
 log_and_echo "=========================================="
-log_and_echo "Девятый критерий: Проверка SSH-связности."
+log_and_echo "Критерий 9: Проверка SSH-связности."
 
 execute_check "Ping ya.ru (проверка DNS)" "ping -c 2 ya.ru"
 
