@@ -88,7 +88,7 @@ log_and_echo "Время проверки: $(date)"
 log_and_echo ""
 
 log_and_echo "=========================================="
-log_and_echo "Первая критерия: IP-Адресация"
+log_and_echo "Первая критерия"
 log_and_echo "Проверка IP адреса:"
 ip a | grep 192.168.1.10/27 >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
@@ -120,7 +120,7 @@ fi
 log_and_echo ""
 
 log_and_echo "=========================================="
-log_and_echo "Пятый критерий"
+log_and_echo "Пятая критерия"
 log_and_echo "Проверка пользователей"
 cat /etc/passwd | grep home >> "$LOG_FILE" 2>&1
 log_and_echo "✓ Список пользователей с домашними директориями записан в лог"
