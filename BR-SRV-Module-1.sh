@@ -56,6 +56,7 @@ execute_check "Ping 192.168.2.10" "ping -c 2 192.168.2.10"
 execute_check "Ping 172.16.2.1" "ping -c 2 172.16.2.1"
 execute_check "Ping 192.168.1.10" "ping -c 2 192.168.1.10"
 execute_check "Ping 8.8.8.8" "ping -c 2 8.8.8.8"
+execute_check "Ping hq-srv" "ping -c 2 hq-srv.au-team.irpo"
 
 # Проверка DNS разрешения имен
 execute_check "Ping ya.ru (проверка DNS)" "ping -c 2 ya.ru"
