@@ -246,7 +246,7 @@ setup_ftp_server() {
     echo "Проверка FTP сервера..."
     
     # Проверяем, установлен ли vsftpd
-    if dpkg -l | grep -q vsftpd; then
+    if ! rpm --quiet -q vsftpd; then
         echo "FTP сервер уже установлен"
     else
         echo "Установка FTP сервера..."
