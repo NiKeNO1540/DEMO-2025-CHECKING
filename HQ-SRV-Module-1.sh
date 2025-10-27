@@ -87,8 +87,9 @@ log_and_echo "=== Начало проверки системы ==="
 log_and_echo "Время проверки: $(date)"
 log_and_echo ""
 
-# Проверка IP адреса
-log_and_echo "1. Проверка IP адреса:"
+log_and_echo "=========================================="
+log_and_echo "Первая критерия: IP-Адресация"
+log_and_echo "Проверка IP адреса:"
 ip a | grep 192.168.1.10/27 >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
     log_and_echo "✓ IP адрес 192.168.1.10/27 настроен"
@@ -97,8 +98,9 @@ else
 fi
 log_and_echo ""
 
-# Проверка временной зоны
-log_and_echo "2. Проверка временной зоны:"
+log_and_echo "=========================================="
+log_and_echo "Вторая критерия."
+log_and_echo "Проверка временной зоны:"
 timedatectl | grep "Asia/Yekaterinburg" >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
     log_and_echo "✓ Временная зона Asia/Yekaterinburg установлена"
@@ -108,7 +110,7 @@ fi
 log_and_echo ""
 
 # Проверка hostname
-log_and_echo "3. Проверка hostname:"
+log_and_echo "Проверка hostname:"
 hostnamectl | grep "hq-srv.au-team.irpo" >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
     log_and_echo "✓ Hostname hq-srv.au-team.irpo установлен"
@@ -117,14 +119,16 @@ else
 fi
 log_and_echo ""
 
-# Проверка домашних директорий
-log_and_echo "4. Проверка пользователей с домашними директориями:"
+log_and_echo "=========================================="
+log_and_echo "Пятый критерий"
+log_and_echo "Проверка пользователей"
 cat /etc/passwd | grep home >> "$LOG_FILE" 2>&1
 log_and_echo "✓ Список пользователей с домашними директориями записан в лог"
 log_and_echo ""
 
-# Проверка доступности сетевых узлов
-log_and_echo "5. Проверка доступности сетевых узлов:"
+log_and_echo "=========================================="
+log_and_echo "Шестая критерия"
+log_and_echo "Проверка доступности сетевых узлов:"
 
 ping_hosts=(
     "192.168.1.1"
@@ -146,8 +150,9 @@ for host in "${ping_hosts[@]}"; do
 done
 log_and_echo ""
 
-# Проверка DNS через ping ya.ru
-log_and_echo "6. Проверка DNS разрешения имен:"
+log_and_echo "=========================================="
+log_and_echo "Седьмая критерия"
+log_and_echo "Проверка DNS разрешения имен:"
 ping -c 2 ya.ru >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
     log_and_echo "✓ DNS разрешение имен работает (ya.ru доступен)"
@@ -157,7 +162,7 @@ fi
 log_and_echo ""
 
 # Проверка службы dnsmasq
-log_and_echo "7. Проверка службы dnsmasq:"
+log_and_echo "Проверка службы dnsmasq:"
 systemctl status dnsmasq | grep -q "Active: active" >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
     log_and_echo "✓ Служба dnsmasq активна"
@@ -193,7 +198,7 @@ fi
 log_and_echo ""
 
 # Проверка доступа в интернет и установка sshpass
-log_and_echo "9. Проверка доступа в интернет и настройка SSH:"
+log_and_echo "Проверка доступа в интернет и настройка SSH:"
 if check_internet_access; then
     log_and_echo "✓ Доступ в интернет есть"
     
@@ -219,8 +224,9 @@ else
 fi
 log_and_echo ""
 
-# Проверка SSH подключения
-log_and_echo "10. Проверка SSH подключения:"
+log_and_echo "=========================================="
+log_and_echo "Девятая критерия"
+log_and_echo "Проверка SSH подключения:"
 log_and_echo "Попытка подключения к sshuser@192.168.3.10:2026..."
 
 # Проверяем, был ли настроен SSH ключ
