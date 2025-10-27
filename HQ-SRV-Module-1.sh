@@ -37,22 +37,8 @@ install_sshpass() {
     log_and_echo "Установка sshpass..."
     
     # Определяем пакетный менеджер
-    if command -v apt-get > /dev/null 2>&1; then
-        # Debian/Ubuntu
-        sudo apt-get update >> "$LOG_FILE" 2>&1
-        sudo apt-get install -y sshpass >> "$LOG_FILE" 2>&1
-    elif command -v yum > /dev/null 2>&1; then
-        # CentOS/RHEL
-        sudo yum install -y sshpass >> "$LOG_FILE" 2>&1
-    elif command -v dnf > /dev/null 2>&1; then
-        # Fedora
-        sudo dnf install -y sshpass >> "$LOG_FILE" 2>&1
-    elif command -v pacman > /dev/null 2>&1; then
-        # Arch Linux
-        sudo pacman -Sy --noconfirm sshpass >> "$LOG_FILE" 2>&1
-    else
-        log_and_echo "✗ Не удалось определить пакетный менеджер для установки sshpass"
-        return 1
+    if ! command -v sshpass > /dev/null 2>&1; then
+        apt-get install sshpass -y
     fi
     
     if command -v sshpass > /dev/null 2>&1; then
