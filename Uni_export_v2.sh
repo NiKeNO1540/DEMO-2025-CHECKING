@@ -234,7 +234,7 @@ br_server_script() {
     echo "Настройки для br-srv.au-team.irpo"
     grep -q "192.168.3.1" ~/.ssh/known_hosts 2>/dev/null || ssh-keyscan 192.168.3.1 >> ~/.ssh/known_hosts
     apt-get install wget sshpass -y
-    if ! [ -f BR-RTR-Export-Config.exp ]; the
+    if ! [ -f BR-RTR-Export-Config.exp ]; then
     wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/BR-RTR-Export-Config.exp
     fi
     expect BR-RTR-Export-Config.exp
