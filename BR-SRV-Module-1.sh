@@ -75,7 +75,7 @@ if ping -c 2 8.8.8.8 &> /dev/null; then
     # Проверяем установлен ли sshpass
     if ! command -v sshpass &> /dev/null; then
         log_and_echo "Установка sshpass..."
-        apt-get install sshpass -y
+        apt-get update && apt-get install sshpass -y
     else
         log_and_echo "sshpass уже установлен"
     fi
