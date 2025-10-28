@@ -38,26 +38,26 @@ execute_check() {
 log_and_echo "Начало проверки системы - $(date)"
 log_and_echo ""
 
-# Проверка IP адреса
+log_and_echo "=========================================="
+log_and_echo "Критерий 1"
 execute_check "Проверка IP адреса 192.168.2.10/28" "ip a | grep 192.168.2.10/28"
 
-# Проверка часового пояса
+log_and_echo "=========================================="
+log_and_echo "Критерий 2"
 execute_check "Проверка часового пояса Asia/Yekaterinburg" "timedatectl | grep Asia/Yekaterinburg"
-
-# Проверка hostname
 execute_check "Проверка hostname hq-cli.au-team.irpo" "hostnamectl | grep hq-cli.au-team.irpo"
 
-# Проверка пользователей с домашними директориями
+log_and_echo "=========================================="
+log_and_echo "Критерий 5"
 execute_check "Проверка пользователей с домашними директориями" "cat /etc/passwd | grep home"
 
-# Проверка доступности сетевых узлов
+log_and_echo "=========================================="
+log_and_echo "Критерий 6"
 execute_check "Пинг 192.168.3.1" "ping 192.168.3.1 -c 2"
 execute_check "Пинг 192.168.3.10" "ping 192.168.3.10 -c 2"
 execute_check "Пинг 172.16.2.1" "ping 172.16.2.1 -c 2"
 execute_check "Пинг 192.168.1.10" "ping 192.168.1.10 -c 2"
 execute_check "Пинг 8.8.8.8" "ping 8.8.8.8 -c 2"
-
-# Проверка DNS разрешения имен
 execute_check "Пинг ya.ru (проверка DNS)" "ping ya.ru -c 2"
 
 log_and_echo "=========================================="
