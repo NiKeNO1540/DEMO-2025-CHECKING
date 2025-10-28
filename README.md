@@ -91,7 +91,7 @@ chmod +x HQ-CLI-Module-1.sh && ./HQ-CLI-Module-1.sh
 
 ```bash
 apt-get update && apt-get install wget -y
-wget placeholder
+wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/HQ-CLI-Module-2.sh
 chmod +x HQ-CLI-Module-2.sh && ./HQ-CLI-Module-2.sh
 ```
 
