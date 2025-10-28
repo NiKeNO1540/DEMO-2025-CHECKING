@@ -4,6 +4,11 @@
 LOG_FILE="system_check_m2.log"
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
+log_and_echo() {
+    local message="$1"
+    echo "$message" | tee -a "$LOG_FILE"
+}
+
 # Функция для выполнения проверки и логирования
 run_check() {
     local description="$1"
