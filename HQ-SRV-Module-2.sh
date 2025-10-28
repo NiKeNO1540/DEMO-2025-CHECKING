@@ -35,13 +35,18 @@ log_and_echo "Начинаем проверку системы..."
 log_and_echo "Лог будет сохранен в: $LOG_FILE"
 log_and_echo ""
 
-# Выполняем проверки
+log_and_echo "=========================================="
+log_and_echo "Критерий 1"
 run_check "Синхронизация времени" "timedatectl | grep 'System clock synchronized: yes'"
+log_and_echo "=========================================="
+log_and_echo "Критерий 2"
 run_check "Существование RAID массива" "lsblk | grep md0"
 run_check "Файл в NFS директории" "ls /raid/nfs | grep test"
 run_check "UUID раздела RAID" 'blkid /dev/md0p1 | grep TYPE=\"ext4\"'
 run_check "Конфигурация mdadm" "cat /etc/mdadm.conf | grep '/dev/md0'"
 run_check "NFS экспорты" "exportfs -v | grep '/raid/nfs'"
+log_and_echo "=========================================="
+log_and_echo "Допольнительные проверки"
 run_check "Доступность веб-сервиса" "curl -s -f http://localhost > /dev/null"
 
 # Дополнительные полезные проверки
