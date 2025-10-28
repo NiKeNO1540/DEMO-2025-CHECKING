@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Настройки
-LOG_FILE="system_check_results.log"
+LOG_FILE="system_check_m2.log"
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
 # Функция для выполнения проверки и логирования
