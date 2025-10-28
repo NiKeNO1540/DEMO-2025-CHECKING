@@ -100,20 +100,40 @@ chmod +x HQ-CLI-Module-2.sh && ./HQ-CLI-Module-2.sh
 <details>
 <summary>HQ-RTR</summary>
 
+### HQ-RTR
+
+```tcl
+en
+conf
+no security default
+end
+wr
+```
+
 ### Первый модуль [ЗАПУСКАЕТСЯ НА HQ-SRV]
 
 ```bash
 apt-get update && apt-get install wget -y
-wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/Uni_export.sh
-chmod +x Uni_export.sh && ./Uni_export.sh
+wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/Uni_export_v2.sh
+chmod +x Uni_export_v2.sh && ./Uni_export_v2.sh
 ```
 
 ### Второй модуль [ЗАПУСКАЕТСЯ НА HQ-SRV]
 
+### HQ-RTR
+
+```tcl
+en
+conf
+no security default
+end
+wr
+```
+
 ```bash
 apt-get update && apt-get install wget -y
-wget placeholder
-chmod +x Uni_export.sh && ./Uni_export.sh
+wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/Uni_export_v2.sh
+chmod +x Uni_export_v2.sh && ./Uni_export_v2.sh
 ```
 
 </details>
@@ -123,18 +143,38 @@ chmod +x Uni_export.sh && ./Uni_export.sh
 
 ### Первый модуль [ЗАПУСКАЕТСЯ НА BR-SRV]
 
+### BR-RTR
+
+```tcl
+en
+conf
+no security default
+end
+wr
+```
+
 ```bash
 apt-get update && apt-get install wget -y
-wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/Uni_export.sh
-chmod +x Uni_export.sh && ./Uni_export.sh
+wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/Uni_export_v2.sh
+chmod +x Uni_export_v2.sh && ./Uni_export_v2.sh
 ```
 
 ### Второй модуль [ЗАПУСКАЕТСЯ НА BR-SRV]
 
+### BR-RTR
+
+```tcl
+en
+conf
+no security default
+end
+wr
+```
+
 ```bash
 apt-get update && apt-get install wget -y
-wget placeholder
-chmod +x Uni_export.sh && ./Uni_export.sh
+wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/Uni_export_v2.sh
+chmod +x Uni_export_v2.sh && ./Uni_export_v2.sh
 ```
 
 </details>
