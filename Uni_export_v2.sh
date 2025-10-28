@@ -24,7 +24,6 @@ check_hq_config() {
         "domain-name au-team.irpo"
         "mask 255.255.255.240"
         "ip domain-name au-team.irpo"
-        "ip name-server 8.8.8.8"
         "router ospf 1"
         "passive-interface default"
         "no passive-interface tunnel.0"
@@ -131,7 +130,6 @@ check_br_config() {
     declare -a expected_lines=(
         "hostname br-rtr"
         "ip domain-name au-team.irpo"
-        "ip name-server 8.8.8.8"
         "router ospf 1"
         "passive-interface default"
         "no passive-interface tunnel.0"
