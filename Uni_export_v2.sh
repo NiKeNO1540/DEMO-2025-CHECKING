@@ -146,7 +146,7 @@ check_br_config() {
         "ip ospf authentication-key 0x8de456332b943f87"
         "interface int0"
         "ip nat outside"
-        "ip address 172.16.2.4/28"
+        "ip address 172.16.2.5/28"
         "interface int1"
         "ip nat inside"
         "ip address 192.168.3.1/28"
