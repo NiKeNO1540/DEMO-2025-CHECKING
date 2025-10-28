@@ -19,7 +19,7 @@ wr
 ### Установка утилиты wget
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 ```
 
 ### Скачивание и запуск скрипта
@@ -40,7 +40,7 @@ wget [Ссылка] && chmod +x [Название файла] && ./[Назван
 ### Первый модуль
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/HQ-SRV-Module-1.sh
 chmod +x HQ-SRV-Module-1.sh && ./HQ-SRV-Module-1.sh
 ```
@@ -48,7 +48,7 @@ chmod +x HQ-SRV-Module-1.sh && ./HQ-SRV-Module-1.sh
 ### Второй модуль
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/HQ-SRV-Module-2.sh
 chmod +x HQ-SRV-Module-2.sh && ./HQ-SRV-Module-2.sh
 ```
@@ -61,7 +61,7 @@ chmod +x HQ-SRV-Module-2.sh && ./HQ-SRV-Module-2.sh
 ### Первый модуль
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/BR-SRV-Module-1.sh
 chmod +x BR-SRV-Module-1.sh && ./BR-SRV-Module-1.sh
 ```
@@ -69,7 +69,7 @@ chmod +x BR-SRV-Module-1.sh && ./BR-SRV-Module-1.sh
 ### Второй модуль
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/BR-SRV-Module-2.sh
 chmod +x BR-SRV-Module-2.sh && ./BR-SRV-Module-2.sh
 ```
@@ -82,7 +82,7 @@ chmod +x BR-SRV-Module-2.sh && ./BR-SRV-Module-2.sh
 ### Первый модуль
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/HQ-CLI-Module-1.sh
 chmod +x HQ-CLI-Module-1.sh && ./HQ-CLI-Module-1.sh
 ```
@@ -90,7 +90,7 @@ chmod +x HQ-CLI-Module-1.sh && ./HQ-CLI-Module-1.sh
 ### Второй модуль
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget placeholder
 chmod +x HQ-CLI-Module-2.sh && ./HQ-CLI-Module-2.sh
 ```
@@ -103,7 +103,7 @@ chmod +x HQ-CLI-Module-2.sh && ./HQ-CLI-Module-2.sh
 ### Первый модуль [ЗАПУСКАЕТСЯ НА HQ-SRV]
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/Uni_export.sh
 chmod +x Uni_export.sh && ./Uni_export.sh
 ```
@@ -111,7 +111,7 @@ chmod +x Uni_export.sh && ./Uni_export.sh
 ### Второй модуль [ЗАПУСКАЕТСЯ НА HQ-SRV]
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget placeholder
 chmod +x Uni_export.sh && ./Uni_export.sh
 ```
@@ -124,7 +124,7 @@ chmod +x Uni_export.sh && ./Uni_export.sh
 ### Первый модуль [ЗАПУСКАЕТСЯ НА BR-SRV]
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/Uni_export.sh
 chmod +x Uni_export.sh && ./Uni_export.sh
 ```
@@ -132,7 +132,7 @@ chmod +x Uni_export.sh && ./Uni_export.sh
 ### Второй модуль [ЗАПУСКАЕТСЯ НА BR-SRV]
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget placeholder
 chmod +x Uni_export.sh && ./Uni_export.sh
 ```
@@ -145,7 +145,7 @@ chmod +x Uni_export.sh && ./Uni_export.sh
 ### Первый модуль
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/ISP-Module-1.sh
 chmod +x ISP-Module-1.sh && ./ISP-Module-1.sh
 ```
@@ -153,7 +153,7 @@ chmod +x ISP-Module-1.sh && ./ISP-Module-1.sh
 ### Второй модуль
 
 ```bash
-apt-get install wget -y
+apt-get update && apt-get install wget -y
 wget placeholder
 chmod +x ISP-Module-2.sh && ./ISP-Module-2.sh
 ```
