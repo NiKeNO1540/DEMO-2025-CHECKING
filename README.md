@@ -194,7 +194,7 @@ chmod +x ISP-Module-1.sh && ./ISP-Module-1.sh
 
 ```bash
 apt-get update && apt-get install wget -y
-wget placeholder
+wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/main/ISP-Module-2.sh
 chmod +x ISP-Module-2.sh && ./ISP-Module-2.sh
 ```
 
