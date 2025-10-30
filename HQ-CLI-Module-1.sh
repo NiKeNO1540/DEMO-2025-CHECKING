@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Файл для записи результатов
-LOG_FILE="system_check_results.txt"
+LOG_FILE="/var/log/system_check_results.txt"
 
 # Очистка файла перед началом проверки
 > "$LOG_FILE"
