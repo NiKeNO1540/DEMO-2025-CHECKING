@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Файл для записи результатов
-LOG_FILE="system_check.log"
+LOG_FILE="/var/log/system_check.log"
 > "$LOG_FILE"  # Очищаем файл перед началом записи
 
 # Функция для вывода и записи в лог
