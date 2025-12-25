@@ -38,7 +38,7 @@ log_and_echo ""
 log_and_echo "=========================================="
 log_and_echo "Критерий 1"
 run_check "Проверка Установленного Яндекса" "command -v yandex-browser-stable"
-run_check "Проверка NTP-связности" "timedatectl | grep System clock synchronized: yes"
+run_check "Проверка NTP-связности" "timedatectl | grep 'System clock synchronized: yes'"
 
 log_and_echo "=========================================="
 log_and_echo "Критерий 3"
