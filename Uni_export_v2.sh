@@ -28,7 +28,7 @@ check_hq_config() {
         "passive-interface default"
         "no passive-interface tunnel.0"
         "area 0.0.0.0 authentication"
-        "network 172.16.0.0/28 area 0.0.0.0"
+        "network 172.16.0.0/30 area 0.0.0.0"
         "network 192.168.1.0/27 area 0.0.0.0"
         "network 192.168.2.0/28 area 0.0.0.0"
         "ip route 0.0.0.0/0 172.16.1.1"
