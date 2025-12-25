@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Настройки
-LOG_FILE="var/log/system_check_m2.log"
+LOG_FILE="/var/log/system_check_m2.log"
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
 log_and_echo() {
