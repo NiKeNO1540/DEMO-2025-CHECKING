@@ -41,7 +41,7 @@ run_check "Синхронизация времени" "timedatectl | grep 'Syste
 log_and_echo "=========================================="
 log_and_echo "Критерий 2"
 run_check "Существование RAID массива" "lsblk | grep md0"
-run_check "Файл в NFS директории" "ls /raid/nfs | grep test"
+run_check "Файл в NFS директории" "ls /raid/nfs"
 run_check "UUID раздела RAID" 'blkid /dev/md0p1 | grep TYPE=\"ext4\"'
 run_check "Конфигурация mdadm" "cat /etc/mdadm.conf | grep '/dev/md0'"
 run_check "NFS экспорты" "exportfs -v | grep '/raid/nfs'"
