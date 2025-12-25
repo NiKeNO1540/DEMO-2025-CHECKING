@@ -1,4 +1,4 @@
-#!/bin/bash
+e#!/bin/bash
 
 # Настройки
 LOG_FILE="/var/log/system_check_m2.log"
@@ -42,7 +42,7 @@ run_check "Проверка NTP-связности" "timedatectl | grep System c
 
 log_and_echo "=========================================="
 log_and_echo "Критерий 3"
-run_check "Проверка Клиентской части" "sudo -l -U hquser1 | grep '/bin/grep, /bin/cat, /usr/bin/id'"
+run_check "Проверка Клиентской части" "sudo -l -U hquser1 | grep '/usr/bin/id, /bin/cat, /bin/grep'"
 
 log_and_echo "=========================================="
 log_and_echo "Критерий 4"
