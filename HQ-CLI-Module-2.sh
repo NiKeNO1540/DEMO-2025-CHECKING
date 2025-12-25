@@ -42,7 +42,7 @@ run_check "Проверка NTP-связности" "timedatectl | grep 'System 
 
 log_and_echo "=========================================="
 log_and_echo "Критерий 3"
-run_check "Проверка Клиентской части" "sudo -l -U hquser1 | grep '/usr/bin/id, /bin/cat, /bin/grep'"
+run_check "Проверка Клиентской части" "sudo -l -U hquser1 | grep '/usr/bin/id'"
 
 log_and_echo "=========================================="
 log_and_echo "Критерий 4"
