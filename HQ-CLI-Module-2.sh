@@ -58,7 +58,7 @@ fi
 
 log_and_echo "=========================================="
 log_and_echo "Критерий 5"
-run_check "Доступность веб-сервиса на BR-SRV" "curl -I http://172.16.2.5:8080 | grep nginx"
+run_check "Доступность веб-сервиса на BR-SRV" "curl -I http://172.16.2.5:8080 | grep uvicorn"
 run_check "Доступность веб-сервиса на BR-SRV с входом" "curl -I -s -f -u WEB:P@ssw0rd http://172.16.2.5:8080"
 run_check "Доступность веб-сервиса на HQ-SRV через прокси" "curl -I -u WEB:P@ssw0rd -s -f http://web.au-team.irpo"
-run_check "Доступность веб-сервиса на BR-SRV через прокси" "curl http://docker.au-team.irpo"
+run_check "Доступность веб-сервиса на BR-SRV через прокси" "curl -I http://docker.au-team.irpo"
