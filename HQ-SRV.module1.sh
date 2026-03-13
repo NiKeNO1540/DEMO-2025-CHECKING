@@ -1,23 +1,47 @@
 #!/bin/bash
 
+# Подключаем файл окружения
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/env.sh"
+
 # Файл для записи результатов
 LOG_FILE="system_check_results.txt"
-CONFIG_FILE="/etc/dnsmasq.conf"
-EXPECTED_CONFIG=(
-    "domain=au-team.irpo"
-    "server=8.8.8.8"
-    "\<hq-rtr.au-team.irpo"
-    "\<168.192.in-addr.arpa,hq-rtr.au-team.irpo"
-    "\<web.au-team.irpo"
-    "\<docker.au-team.irpo"
-    "\<br-rtr.au-team.irpo"
-    "\<hq-srv.au-team.irpo"
-    "\<168.192.in-addr.arpa,hq-srv.au-team.irpo"
-    "\<hq-cli.au-team.irpo"
-    "\<168.192.in-addr.arpa,hq-cli.au-team.irpo"
-    "\<br-srv.au-team.irpo"
-)
-SSH_PASSWORD="P@ssw0rd"
+
+# Массивы для отслеживания результатов
+declare -a CHECK_NAMES=()
+declare -a CHECK_RESULTS=()
+
+# Функция для записи результата проверки
+add_result() {
+    CHECK_NAMES+=("$1")
+    CHECK_RESULTS+=("$2")
+}
+
+# Функция для вывода итоговой таблицы
+print_summary_table() {
+    local pass=0
+    local fail=0
+    local total=${#CHECK_NAMES[@]}
+
+    echo ""
+    echo "================================ ИТОГОВАЯ ТАБЛИЦА ================================"
+    printf "%-55s | %s\n" "Пункт проверки" "Результат"
+    echo "-----------------------------------------------------------+--------------------"
+
+    for i in "${!CHECK_NAMES[@]}"; do
+        if [[ "${CHECK_RESULTS[$i]}" == "OK" ]]; then
+            printf "%-55s | \e[32m✓ Выполнено\e[0m\n" "${CHECK_NAMES[$i]}"
+            ((pass++))
+        else
+            printf "%-55s | \e[31m✗ Не выполнено\e[0m\n" "${CHECK_NAMES[$i]}"
+            ((fail++))
+        fi
+    done
+
+    echo "-----------------------------------------------------------+--------------------"
+    echo -e "ИТОГО: \e[32m$pass\e[0m из $total выполнено"
+    echo "================================================================================="
+}
 
 # Функция для логирования и вывода
 log_and_echo() {
@@ -28,19 +52,18 @@ log_and_echo() {
 # Функция проверки доступа в интернет
 check_internet_access() {
     log_and_echo "Проверка доступа в интернет..."
-    ping -c 2 -W 3 8.8.8.8 > /dev/null 2>&1
+    ping -c 2 -W 3 "$DNS_SERVER" > /dev/null 2>&1
     return $?
 }
 
 # Функция установки sshpass
 install_sshpass() {
     log_and_echo "Установка sshpass..."
-    
-    # Определяем пакетный менеджер
+
     if ! command -v sshpass > /dev/null 2>&1; then
         apt-get install sshpass -y
     fi
-    
+
     if command -v sshpass > /dev/null 2>&1; then
         log_and_echo "✓ sshpass успешно установлен"
         return 0
@@ -53,10 +76,9 @@ install_sshpass() {
 # Функция настройки SSH подключения
 setup_ssh_connection() {
     log_and_echo "Настройка SSH подключения..."
-    
-    # Сканирование SSH ключа хоста
+
     log_and_echo "Создание SSH ключа + добавление хоста в known_hosts..."
-    ssh-keyscan -p 2026 -H 192.168.3.10 >> ~/.ssh/known_hosts 2>> "$LOG_FILE"
+    timeout 10 ssh-keyscan -p "$SSH_PORT" -H "$HQ_SRV_SSH_TARGET" >> ~/.ssh/known_hosts 2>> "$LOG_FILE"
     if ! [ -f ~/.ssh/id_rsa ]; then
     ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa -q
     else
@@ -67,15 +89,18 @@ setup_ssh_connection() {
     else
         log_and_echo "✗ Ошибка добавления SSH ключа хоста"
     fi
-    
-    # Копирование SSH ключа
+
     log_and_echo "Копирование SSH ключа на удаленный хост..."
-    sshpass -p "$SSH_PASSWORD" ssh-copy-id -p 2026 sshuser@192.168.3.10 >> "$LOG_FILE" 2>&1
-    if [ $? -eq 0 ]; then
+
+    if timeout 10 sshpass -p "$SSH_PASSWORD" ssh-copy-id -p "$SSH_PORT" "$SSH_USER@$HQ_SRV_SSH_TARGET" >> "$LOG_FILE" 2>&1; then
         log_and_echo "✓ SSH ключ успешно скопирован на удаленный хост"
         return 0
     else
-        log_and_echo "✗ Ошибка копирования SSH ключа"
+        if [ $? -eq 124 ]; then
+            log_and_echo "✗ Тайм-аут при копировании SSH ключа (превышено 10 секунд)"
+        else
+            log_and_echo "✗ Ошибка копирования SSH ключа"
+        fi
         return 1
     fi
 }
@@ -90,32 +115,37 @@ log_and_echo ""
 log_and_echo "=========================================="
 log_and_echo "Критерий 1"
 log_and_echo "Проверка IP адреса:"
-ip a | grep 192.168.1.10/27 >> "$LOG_FILE" 2>&1
+ip a | grep "$HQ_SRV_IP" >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
-    log_and_echo "✓ IP адрес 192.168.1.10/27 настроен"
+    log_and_echo "✓ IP адрес $HQ_SRV_IP настроен"
+    add_result "IP адрес $HQ_SRV_IP" "OK"
 else
-    log_and_echo "✗ IP адрес 192.168.1.10/27 НЕ настроен"
+    log_and_echo "✗ IP адрес $HQ_SRV_IP НЕ настроен"
+    add_result "IP адрес $HQ_SRV_IP" "FAIL"
 fi
 log_and_echo ""
 
 log_and_echo "=========================================="
 log_and_echo "Критерий 2"
 log_and_echo "Проверка временной зоны:"
-timedatectl | grep "Asia/Yekaterinburg" >> "$LOG_FILE" 2>&1
+timedatectl | grep "$TIMEZONE" >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
-    log_and_echo "✓ Временная зона Asia/Yekaterinburg установлена"
+    log_and_echo "✓ Временная зона $TIMEZONE установлена"
+    add_result "Часовой пояс $TIMEZONE" "OK"
 else
-    log_and_echo "✗ Временная зона Asia/Yekaterinburg НЕ установлена"
+    log_and_echo "✗ Временная зона $TIMEZONE НЕ установлена"
+    add_result "Часовой пояс $TIMEZONE" "FAIL"
 fi
 log_and_echo ""
 
-# Проверка hostname
 log_and_echo "Проверка hostname:"
-hostnamectl | grep "hq-srv.au-team.irpo" >> "$LOG_FILE" 2>&1
+hostnamectl | grep "$HQ_SRV_HOSTNAME" >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
-    log_and_echo "✓ Hostname hq-srv.au-team.irpo установлен"
+    log_and_echo "✓ Hostname $HQ_SRV_HOSTNAME установлен"
+    add_result "Hostname $HQ_SRV_HOSTNAME" "OK"
 else
-    log_and_echo "✗ Hostname hq-srv.au-team.irpo НЕ установлен"
+    log_and_echo "✗ Hostname $HQ_SRV_HOSTNAME НЕ установлен"
+    add_result "Hostname $HQ_SRV_HOSTNAME" "FAIL"
 fi
 log_and_echo ""
 
@@ -123,29 +153,28 @@ log_and_echo "=========================================="
 log_and_echo "Критерий 5"
 log_and_echo "Проверка пользователей"
 cat /etc/passwd | grep home >> "$LOG_FILE" 2>&1
-log_and_echo "✓ Список пользователей с домашними директориями записан в лог"
+if [ $? -eq 0 ]; then
+    log_and_echo "✓ Пользователи с домашними директориями найдены"
+    add_result "Пользователи с домашними директориями" "OK"
+else
+    log_and_echo "✗ Пользователи с домашними директориями не найдены"
+    add_result "Пользователи с домашними директориями" "FAIL"
+fi
 log_and_echo ""
 
 log_and_echo "=========================================="
 log_and_echo "Критерий 6"
 log_and_echo "Проверка доступности сетевых узлов:"
 
-ping_hosts=(
-    "192.168.1.1"
-    "192.168.2.10" 
-    "172.16.1.1"
-    "192.168.3.10"
-    "8.8.8.8"
-    "br-srv.au-team.irpo"
-)
-
-for host in "${ping_hosts[@]}"; do
+for host in "${HQ_SRV_PING_TARGETS[@]}"; do
     log_and_echo "Пинг $host:"
     ping -c 2 "$host" >> "$LOG_FILE" 2>&1
     if [ $? -eq 0 ]; then
         log_and_echo "✓ $host - доступен"
+        add_result "Пинг $host" "OK"
     else
         log_and_echo "✗ $host - НЕ доступен"
+        add_result "Пинг $host" "FAIL"
     fi
 done
 log_and_echo ""
@@ -153,11 +182,13 @@ log_and_echo ""
 log_and_echo "=========================================="
 log_and_echo "Критерий 7"
 log_and_echo "Проверка DNS разрешения имен:"
-ping -c 2 ya.ru >> "$LOG_FILE" 2>&1
+ping -c 2 "$DNS_CHECK_HOST" >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
-    log_and_echo "✓ DNS разрешение имен работает (ya.ru доступен)"
+    log_and_echo "✓ DNS разрешение имен работает ($DNS_CHECK_HOST доступен)"
+    add_result "DNS разрешение имен ($DNS_CHECK_HOST)" "OK"
 else
     log_and_echo "✗ DNS разрешение имен НЕ работает"
+    add_result "DNS разрешение имен ($DNS_CHECK_HOST)" "FAIL"
 fi
 log_and_echo ""
 
@@ -166,34 +197,39 @@ log_and_echo "Проверка службы dnsmasq:"
 systemctl status dnsmasq | grep -q "Active: active" >> "$LOG_FILE" 2>&1
 if [ $? -eq 0 ]; then
     log_and_echo "✓ Служба dnsmasq активна"
+    add_result "Служба dnsmasq активна" "OK"
 else
     log_and_echo "✗ Служба dnsmasq НЕ активна"
+    add_result "Служба dnsmasq активна" "FAIL"
 fi
 log_and_echo ""
 
 # Проверка конфигурации dnsmasq.conf
-log_and_echo "8. Проверка конфигурации $CONFIG_FILE:"
+log_and_echo "8. Проверка конфигурации $DNSMASQ_CONFIG_FILE:"
 
-if [ -f "$CONFIG_FILE" ]; then
+if [ -f "$DNSMASQ_CONFIG_FILE" ]; then
     log_and_echo "✓ Файл конфигурации существует"
-    
+
     missing_configs=0
-    for config_line in "${EXPECTED_CONFIG[@]}"; do
-        if grep -q "$config_line" "$CONFIG_FILE"; then
+    for config_line in "${DNSMASQ_EXPECTED[@]}"; do
+        if grep -q "$config_line" "$DNSMASQ_CONFIG_FILE"; then
             log_and_echo "✓ Найдена строка: $config_line"
         else
             log_and_echo "✗ Отсутствует строка: $config_line"
             ((missing_configs++))
         fi
     done
-    
+
     if [ $missing_configs -eq 0 ]; then
         log_and_echo "✓ Все необходимые конфигурационные строки присутствуют"
+        add_result "Конфигурация dnsmasq" "OK"
     else
         log_and_echo "✗ Отсутствует $missing_configs конфигурационных строк"
+        add_result "Конфигурация dnsmasq" "FAIL"
     fi
 else
-    log_and_echo "✗ Файл конфигурации $CONFIG_FILE не существует"
+    log_and_echo "✗ Файл конфигурации $DNSMASQ_CONFIG_FILE не существует"
+    add_result "Конфигурация dnsmasq" "FAIL"
 fi
 log_and_echo ""
 
@@ -201,20 +237,17 @@ log_and_echo ""
 log_and_echo "Проверка доступа в интернет и настройка SSH:"
 if check_internet_access; then
     log_and_echo "✓ Доступ в интернет есть"
-    
-    # Проверяем, установлен ли уже sshpass
+
     if ! command -v sshpass > /dev/null 2>&1; then
         install_sshpass
     else
         log_and_echo "✓ sshpass уже установлен"
     fi
-    
-    # Настраиваем SSH подключение если sshpass доступен
+
     if command -v sshpass > /dev/null 2>&1; then
-        # Создаем .ssh директорию если не существует
         mkdir -p ~/.ssh
         chmod 700 ~/.ssh
-        
+
         setup_ssh_connection
     else
         log_and_echo "✗ sshpass недоступен, пропускаем настройку SSH ключей"
@@ -227,38 +260,35 @@ log_and_echo ""
 log_and_echo "=========================================="
 log_and_echo "Критерий 9"
 log_and_echo "Проверка SSH подключения:"
-log_and_echo "Попытка подключения к sshuser@192.168.3.10:2026..."
+log_and_echo "Попытка подключения к $SSH_USER@$HQ_SRV_SSH_TARGET:$SSH_PORT..."
 
-# Проверяем, был ли настроен SSH ключ
 if [ -f ~/.ssh/id_rsa ] || [ -f ~/.ssh/id_ed25519 ]; then
-    # Пробуем подключение без пароля (по ключу)
-    timeout 10 ssh -o ConnectTimeout=5 -o BatchMode=yes -o StrictHostKeyChecking=no sshuser@192.168.3.10 -p 2026 exit >> "$LOG_FILE" 2>&1
+    timeout 10 ssh -o ConnectTimeout=5 -o BatchMode=yes -o StrictHostKeyChecking=no "$SSH_USER@$HQ_SRV_SSH_TARGET" -p "$SSH_PORT" exit >> "$LOG_FILE" 2>&1
     ssh_exit_code=$?
 else
-    # Пробуем подключение с паролем (если sshpass установлен)
     if command -v sshpass > /dev/null 2>&1; then
-        timeout 10 sshpass -p "$SSH_PASSWORD" ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no sshuser@192.168.3.10 -p 2026 exit >> "$LOG_FILE" 2>&1
+        timeout 10 sshpass -p "$SSH_PASSWORD" ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$SSH_USER@$HQ_SRV_SSH_TARGET" -p "$SSH_PORT" exit >> "$LOG_FILE" 2>&1
         ssh_exit_code=$?
     else
-        # Простая проверка без аутентификации
-        timeout 10 ssh -o ConnectTimeout=5 -o BatchMode=yes -o StrictHostKeyChecking=no sshuser@192.168.3.10 -p 2026 exit >> "$LOG_FILE" 2>&1
+        timeout 10 ssh -o ConnectTimeout=5 -o BatchMode=yes -o StrictHostKeyChecking=no "$SSH_USER@$HQ_SRV_SSH_TARGET" -p "$SSH_PORT" exit >> "$LOG_FILE" 2>&1
         ssh_exit_code=$?
     fi
 fi
 
 if [ $ssh_exit_code -eq 0 ]; then
     log_and_echo "✓ SSH подключение успешно"
+    add_result "SSH подключение к $HQ_SRV_SSH_TARGET:$SSH_PORT" "OK"
 elif [ $ssh_exit_code -eq 124 ]; then
     log_and_echo "⚠ SSH подключение требует аутентификации (таймаут)"
+    add_result "SSH подключение к $HQ_SRV_SSH_TARGET:$SSH_PORT" "FAIL"
 else
     log_and_echo "✗ SSH подключение НЕ удалось (код ошибки: $ssh_exit_code)"
+    add_result "SSH подключение к $HQ_SRV_SSH_TARGET:$SSH_PORT" "FAIL"
 fi
 
 log_and_echo ""
 log_and_echo "=== Проверка завершена ==="
-log_and_echo "Подробные результаты сохранены в файл: $LOG_FILE"
 
-# Вывод итоговой информации
-echo ""
-echo "=== Краткие результаты проверки ==="
-tail -n 60 "$LOG_FILE" | grep -E "^(✓|✗|⚠|===|Проверка|Настройка)"
+print_summary_table | tee -a "$LOG_FILE"
+
+log_and_echo "Подробные результаты сохранены в файл: $LOG_FILE"

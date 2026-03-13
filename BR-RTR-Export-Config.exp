@@ -10,10 +10,10 @@ if {$force_conservative} {
 }
 
 set timeout -1
-spawn sshpass -p admin ssh admin@192.168.3.1
+spawn sshpass -p admin ssh admin@$env(BR_RTR_IP)
 match_max 100000
 expect -exact "7\[r\[999;999H\[6n"
 send -- "\[24;86R"
 expect -exact "br-rtr>"
-send -- "en\rwr\rcopy startup-config ftp ftp://ftpuser:password@192.168.3.10/pub/br-rtr-config.tar.gz\rexit\r "
+send -- "en\rwr\rcopy startup-config ftp ftp://ftpuser:password@$env(BR_RTR_IP_EX)/pub/br-rtr-config.tar.gz\rexit\r "
 expect eof
