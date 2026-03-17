@@ -187,6 +187,8 @@ EOF
 apt-get update
 setup_ftp_server
 
+wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/new/BR-RTR-Export-Config.exp
+
 export BR_RTR_IP=$BR_RTR_IP
 export BR_SRV_IP_EX="${BR_SRV_IP%%/*}"
 

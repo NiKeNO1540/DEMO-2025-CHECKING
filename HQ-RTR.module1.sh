@@ -187,6 +187,8 @@ EOF
 apt-get update
 setup_ftp_server
 
+wget https://raw.githubusercontent.com/NiKeNO1540/DEMO-2025-CHECKING/refs/heads/new/HQ-RTR-Export-Config.exp
+
 export HQ_RTR_IP=$HQ_RTR_IP
 export HQ_SRV_IP_EX="${HQ_SRV_IP%%/*}"
 
