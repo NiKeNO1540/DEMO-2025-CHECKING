@@ -27,10 +27,10 @@ check_hq_config() {
         "router ospf 1"
         "passive-interface default"
         "no passive-interface tunnel.0"
-        "area 0.0.0.0 authentication"
-        "network 172.16.0.0/30 area 0.0.0.0"
-        "network 192.168.1.0/27 area 0.0.0.0"
-        "network 192.168.2.0/28 area 0.0.0.0"
+        "area 0 authentication"
+        "network 172.16.0.0/30 area 0"
+        "network 192.168.1.0/27 area 0"
+        "network 192.168.2.0/28 area 0"
         "ip route 0.0.0.0/0 172.16.1.1"
         "ntp timezone utc+5"
         "interface tunnel.0"
@@ -78,7 +78,7 @@ check_hq_config() {
     
     # Проверка OSPF networks
     local ospf_networks=3
-    local found_networks=$(grep -c "network.*area 0.0.0.0" "$config_file")
+    local found_networks=$(grep -c "network.*area 0" "$config_file")
     if [[ $found_networks -eq $ospf_networks ]]; then
         echo "✓ Найдено $found_networks OSPF network объявлений"
     else
