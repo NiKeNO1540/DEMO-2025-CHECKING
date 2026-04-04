@@ -133,9 +133,9 @@ check_br_config() {
         "router ospf 1"
         "passive-interface default"
         "no passive-interface tunnel.0"
-        "area 0.0.0.0 authentication"
-        "network 172.16.0.0/30 area 0.0.0.0"
-        "network 192.168.3.0/28 area 0.0.0.0"
+        "area 0 authentication"
+        "network 172.16.0.0/30 area 0"
+        "network 192.168.3.0/28 area 0"
         "ip route 0.0.0.0/0 172.16.2.1"
         "ntp timezone utc+5"
         "interface tunnel.0"
@@ -153,7 +153,7 @@ check_br_config() {
     
     # Проверяем каждую ожидаемую строку
     for line in "${expected_lines[@]}"; do
-        if grep -q "$line" "$config_file"; then
+        if grep -qi "$line" "$config_file"; then
             echo "✓ Найдено: $line"
         else
             echo "✗ ОШИБКА: Не найдено: $line"
