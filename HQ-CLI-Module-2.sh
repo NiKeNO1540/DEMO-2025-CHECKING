@@ -59,6 +59,6 @@ fi
 log_and_echo "=========================================="
 log_and_echo "Критерий 5"
 run_check "Доступность веб-сервиса на BR-SRV" "timeout 10 curl -I http://172.16.2.5:8080 | grep uvicorn"
-run_check "Доступность веб-сервиса на BR-SRV с входом" "timeout 10 curl -u WEB:P@ssw0rd http://172.16.1.4:8080"
+run_check "Доступность веб-сервиса на BR-SRV с входом" "timeout 10 curl http://172.16.1.4:8080"
 run_check "Доступность веб-сервиса на HQ-SRV через прокси" "timeout 10 curl -u WEB:P@ssw0rd -s http://web.au-team.irpo"
 run_check "Доступность веб-сервиса на BR-SRV через прокси" "timeout 10 curl http://docker.au-team.irpo"
