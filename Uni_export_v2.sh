@@ -174,7 +174,7 @@ check_br_config() {
     
     # Проверка OSPF networks
     local ospf_networks=2
-    local found_networks=$(grep -c "network.*area 0.0.0.0" "$config_file")
+    local found_networks=$(grep -c "network.*area 0" "$config_file")
     if [[ $found_networks -eq $ospf_networks ]]; then
         echo "✓ Найдено $found_networks OSPF network объявлений"
     else
