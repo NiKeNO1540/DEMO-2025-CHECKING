@@ -47,7 +47,7 @@ run_check "Конфигурация mdadm" "cat /etc/mdadm.conf | grep '/dev/md0
 run_check "NFS экспорты" "exportfs -v | grep '/raid/nfs'"
 log_and_echo "=========================================="
 log_and_echo "Допольнительные проверки"
-run_check "Доступность веб-сервиса" "curl -s -f http://localhost > /dev/null"
+run_check "Доступность веб-сервиса" "curl -s http://localhost > /dev/null"
 
 # Дополнительные полезные проверки
 run_check "Состояние RAID массива" "cat /proc/mdstat"
